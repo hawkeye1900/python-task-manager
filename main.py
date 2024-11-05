@@ -1,39 +1,59 @@
-todos = []
 
+def check_todos():
+    with open("files/todos.txt", "r") as file:
+        tasks = file.readlines()
 
-def show():
-    if len(todos) == 0:
-        print("No tasks to show")
+    if len(tasks) == 0:
+        print("Currently no tasks to show\n")
+        return None
     else:
-        print("No. Task")
-        for i, item in enumerate(todos):
-            print(f"{i + 1}: {item.capitalize()}")
+        return tasks
+
+
+def show(arr):
     print("\n")
+    if arr:
+        print("No. Task")
+        for i, item in enumerate(arr):
+            print(f"{i + 1}: {item.capitalize().strip("\n")}")
+    else:
+        print("Currently no tasks to show\n")
 
 
+todos = check_todos()
+print(todos)
 while True:
-    choice = input("Enter what you want to do from the following options:"
+    choice = input("Enter what you want to do from the following options: "
                    "\nadd"
                    "\nshow"
                    "\nedit"
                    "\ncomplete"
                    "\nexit\n: ")
     choice = choice.strip().lower()
+
+    # menu options below
     match choice:
         case "add":
-            todo = input("Enter a task: ")
-            todos.append(todo)
-        case "show":
-            show()
-        case 'edit':
-            if len(todos) == 0:
-                print("No tasks to edit")
+            todo = input("Enter a task: ") + "\n"
 
+            with open("files/todos.txt", "r") as file:
+                todos = file.readlines()
+
+            todos.append(todo)
+
+            with open("files/todos.txt", "w") as file:
+                file.writelines(todos)
+
+        case "show":
+            show(todos)
+        case 'edit':
+            if not todos:
+                print("No tasks to edit\n")
+                continue
             while True:
-                print("From the following list of tasks, enter the number of the task to edit")
-                show()
                 try:
-                    selected = int(input("Choice: ")) - 1
+                    show(todos)
+                    selected = int(input("Enter the number of the task to edit: ")) - 1
                     if selected < 0 or selected >= len(todos):
                         raise IndexError("You must select the number of a task from the list shown.")
                 except (ValueError, IndexError) as e:
@@ -43,16 +63,20 @@ while True:
                         print("\033[91mINVALID INPUT\033[0m: You must select the number of a task from the list shown.")
                     continue
                 new_task = input("Enter your new task: ")
-                todos[selected] = new_task
+                todos[selected] = f"{new_task}\n"
                 print("New task updated successfully")
-                show()
+                show(todos)
+                with open("files/todos.txt", "w") as file:
+                    file.writelines(todos)
                 break
         case "complete":
             print("From the following list of tasks, enter the number of the task to complete")
-            show()
+            show(todos)
             number = int(input("Choice: ")) - 1
             todos.pop(number)
-            show()
+            with open("files/todos.txt", "w") as file:
+                file.writelines(todos)
+            show(todos)
         case "exit":
             break
         case _:
