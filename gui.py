@@ -8,20 +8,20 @@ if not os.path.exists("todos.txt"):
         pass
 
 fsg.theme("DarkGreen5")
-
+clock = fsg.Text("", key="clock")
 
 # INPUT FIELDS AND LABELS
-# Input label followed by field which returns a dictionary with key (ie "New Task") as the dictionary
-# key value, and the input is returned as the value
-clock = fsg.Text("", key="clock")
+# Input label followed by field which returns a dictionary with key
+# (ie "New Task") as the dictionary key value, and the input is returned
+# as the value
+
 taskInputLabel = fsg.Text("Enter task:")
 taskInputField = fsg.InputText(tooltip="Enter new task",
                                key="New task")
 
-
-# BUTTONS
+# CREATE BUTTONS
 editBtn = fsg.Button("Edit")
-# deleteBtn = fsg.Button("Delete")
+deleteBtn = fsg.Button("Delete")
 addTaskBtn = fsg.Button("Add task", key="Add")
 exitBtn = fsg.Button("Exit")
 completeBtn = fsg.Button("Complete")
@@ -34,37 +34,51 @@ displayedTasks = fsg.Listbox(values=functions.get_todos("r"),
                              enable_events=True,
                              size=(45, 12))
 
-
 layout = [
     [clock],
     [taskInputLabel],
     [taskInputField, addTaskBtn],
-    [displayedTasks, editBtn, completeBtn],
+    [editBtn, completeBtn, deleteBtn],
+    [displayedTasks],
     [exitBtn, cancelBtn]
 ]
 
-# Create an instance of window type, with the title "Task Manager", and given layout and font
+# Create an instance of window type, with the title "Task Manager", and given
+# layout and font
 window = fsg.Window("Task Manager",
                     layout,
                     font=("Helvetica", 20))
 
 
-
 while True:
-    # window.read() pauses the program and waits for user interaction
-    # the event return value can be de-structured
+    # window.read() reads data from window events.
+    # the timeout param causes read to wait for user interaction. If no
+    # interaction takes place, it returns a timeout_key
+    # the read() return value can be de-structured
     # and the event used to decide on the next step
-    event, values = window.read(timeout=1000)
+    event, values = window.read(timeout=1000,
+                                close=False,
+                                timeout_key="No new event")
+    print(f"values {values}")
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
-    # The event returns a tuple containing:
-    #   the text from the button pressed (the event), ie if addTaskBtn is pressed, ("Add task", {})
-    #   followed by a dictionary with key set to the input field key
-    #   and the value is the string entered into the input field
+
+
+    #   The event returns a tuple containing:
+    #   the key text from the button pressed (the event), ie if addTaskBtn is
+    #   pressed, "Add" followed by a dictionary {key:value} with key
+    #   set to the input field key and the value is the string entered into the
+    #   input field. So if a new task called 'New task' is added and the add
+    #   button pressed, then the event will return Add, 'New task'
+    #
 
     match event:
         case "Add":
             tasksList = functions.get_todos("r")
-            newTask = values["New task"] + "\n"
+            newTask = values["New task"]
+            if not newTask:
+                continue
+            print(newTask)
+            newTask = newTask + "\n"
             tasksList.append(newTask)
             functions.get_todos("w", tasksList)
             window["New task"].update("")
@@ -105,7 +119,8 @@ while True:
             window["New task"].update("")
             continue
         case "listOfTasks":
-            window["New task"].update(value=values["listOfTasks"][0].strip("\n"))
+            window["New task"].update(value=values["listOfTasks"][0]
+                                      .strip("\n"))
         case fsg.WIN_CLOSED:
             break
         case "Exit":
