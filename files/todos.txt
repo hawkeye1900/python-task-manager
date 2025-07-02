@@ -1,5 +1,2 @@
-Walk Dog
-Complete python course
-Do React YouTube Course
-Cook dinner
-Book Ricky Gervais tickets
+First task
+Second task

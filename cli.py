@@ -32,15 +32,19 @@ while True:
             continue
         while True:
             try:
-                selected = int(input("Enter the number of the task to edit: ")) - 1
+                selected = int(input("Enter the number of the task to "
+                                     "edit: ")) - 1
                 if selected < 0 or selected >= len(todos):
-                    raise IndexError("\033[91mINVALID INPUT\033[0m: You must select the "
-                                     "number of a task from the list shown.")
+                    raise IndexError("\033[91mINVALID INPUT\033[0m: You must "
+                                     "select the number of a task from the "
+                                     "list shown.")
             except (ValueError, IndexError) as e:
                 if isinstance(e, ValueError):
-                    print("\033[91mINVALID INPUT\033[0m: Please enter a valid number.")
+                    print("\033[91mINVALID INPUT\033[0m: Please enter a "
+                          "valid number.")
                 elif isinstance(e, IndexError):
-                    print("\033[91mINVALID INPUT\033[0m: You must select the number of a task from the list shown.")
+                    print("\033[91mINVALID INPUT\033[0m: You must select "
+                          "the number of a task from the list shown.")
                 continue
             new_task = input("Enter your new task: ")
             todos[selected] = f"{new_task}\n"
@@ -50,7 +54,8 @@ while True:
                 file.writelines(todos)
             break
     elif choice.startswith("complete"):
-        print("From the following list of tasks, enter the number of the task to complete")
+        print("From the following list of tasks, enter the number of the "
+              "task to complete")
         functions.show(todos)
         number = int(input("Choice: ")) - 1
         todos.pop(number)
@@ -62,4 +67,3 @@ while True:
     else:
         print("You entered an unknown command\nEnter a valid command\n")
 print("Bye!")
-

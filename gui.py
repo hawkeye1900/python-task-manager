@@ -7,25 +7,26 @@ if not os.path.exists("todos.txt"):
     with open("todos.txt", "w") as file:
         pass
 
-fsg.theme("DarkGreen5")
+fsg.theme("DarkGreen7")
 clock = fsg.Text("", key="clock")
 
 # INPUT FIELDS AND LABELS
 # Input label followed by field which returns a dictionary with key
 # (ie "New Task") as the dictionary key value, and the input is returned
-# as the value
+# as the value. It is the key that window uses to refer to that element and
+# get the value
 
 taskInputLabel = fsg.Text("Enter task:")
 taskInputField = fsg.InputText(tooltip="Enter new task",
                                key="New task")
 
-# CREATE BUTTONS
-editBtn = fsg.Button("Edit")
-deleteBtn = fsg.Button("Delete")
+# CREATE BUTTONS - by default they return a click event. Events can be disabled
+editBtn = fsg.Button("Edit", key="Edit")
+deleteBtn = fsg.Button("Delete", key="Delete")
 addTaskBtn = fsg.Button("Add task", key="Add")
-exitBtn = fsg.Button("Exit")
-completeBtn = fsg.Button("Complete")
-cancelBtn = fsg.Button("Cancel")
+exitBtn = fsg.Button("Exit", key="Exit")
+completeBtn = fsg.Button("Complete", key="Complete")
+cancelBtn = fsg.Button("Cancel", key="Cancel")
 
 
 # DISPLAY FIELDS
@@ -43,7 +44,7 @@ layout = [
     [exitBtn, cancelBtn]
 ]
 
-# Create an instance of window type, with the title "Task Manager", and given
+# Create an instance of window class, with the title "Task Manager", and given
 # layout and font
 window = fsg.Window("Task Manager",
                     layout,
@@ -54,22 +55,36 @@ while True:
     # window.read() reads data from window events.
     # the timeout param causes read to wait for user interaction. If no
     # interaction takes place, it returns a timeout_key
-    # the read() return value can be de-structured
-    # and the event used to decide on the next step
+    # the read() call returns 2 values, by convention known as event, values
+
+    # In all windows, events are triggered by:
+    #
+    # Button click
+    # Window closed using X
+
+    # Other events can be specifcally enabled using 'enable_events=True'
+    # when an element is created.
+
     event, values = window.read(timeout=1000,
                                 close=False,
+                                # if close=True, window closes after
+                                # timeout
                                 timeout_key="No new event")
-    print(f"values {values}")
+
+    # The clock is updated every 1 second, due to the timeout value in read(
+    # which is in ms
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
 
+    #   The event returns the key text from the button pressed or input
+    #   changed, ie if addTaskBtn is pressed, event = "Add"
 
-    #   The event returns a tuple containing:
-    #   the key text from the button pressed (the event), ie if addTaskBtn is
-    #   pressed, "Add" followed by a dictionary {key:value} with key
-    #   set to the input field key and the value is the string entered into the
-    #   input field. So if a new task called 'New task' is added and the add
-    #   button pressed, then the event will return Add, 'New task'
-    #
+    #   values is a list or as in this case a dictionary of inputs,
+    #   where each input has a key and is given a value, which makes up the
+    #   dictionary key:value pairs. If the task input field receives a
+    #   value, then its key is "New task", which will be the key in the
+    #   dictionary key/value pair. Its value then is the value in the dict.
+    currentTasksList = functions.get_todos("r")
+    window["listOfTasks"].update(values=currentTasksList)
 
     match event:
         case "Add":
@@ -80,6 +95,7 @@ while True:
             print(newTask)
             newTask = newTask + "\n"
             tasksList.append(newTask)
+            print(tasksList)
             functions.get_todos("w", tasksList)
             window["New task"].update("")
             window["listOfTasks"].update(values=tasksList)
@@ -104,6 +120,8 @@ while True:
             except IndexError:
                 fsg.popup("Please select a task first",
                           font=("Helvetica", 20))
+        case "Delete":
+            print("TODO")
         case "Complete":
             try:
                 tasksList = functions.get_todos("r")
