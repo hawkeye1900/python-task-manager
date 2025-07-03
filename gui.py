@@ -16,9 +16,13 @@ clock = fsg.Text("", key="clock")
 # as the value. It is the key that window uses to refer to that element and
 # get the value
 
-taskInputLabel = fsg.Text("Enter task:")
+taskInputLabel = fsg.Text("New task")
 taskInputField = fsg.InputText(tooltip="Enter new task",
                                key="New task")
+
+displaySelectedTaskLabel = fsg.Text("Selected task")
+displaySelectedTaskField = fsg.InputText(tooltip="Display selected task",
+                                         key="Selected task")
 
 # CREATE BUTTONS - by default they return a click event. Events can be disabled
 editBtn = fsg.Button("Edit", key="Edit")
@@ -40,6 +44,8 @@ layout = [
     [taskInputLabel],
     [taskInputField, addTaskBtn],
     [editBtn, completeBtn, deleteBtn],
+    [displaySelectedTaskLabel],
+    [displaySelectedTaskField],
     [displayedTasks],
     [exitBtn, cancelBtn]
 ]
@@ -71,7 +77,7 @@ while True:
                                 # timeout
                                 timeout_key="No new event")
 
-    # The clock is updated every 1 second, due to the timeout value in read(
+    # The clock is updated every 1 second, due to the timeout value in read()
     # which is in ms
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
 
@@ -83,8 +89,6 @@ while True:
     #   dictionary key:value pairs. If the task input field receives a
     #   value, then its key is "New task", which will be the key in the
     #   dictionary key/value pair. Its value then is the value in the dict.
-    currentTasksList = functions.get_todos("r")
-    window["listOfTasks"].update(values=currentTasksList)
 
     match event:
         case "Add":
@@ -92,10 +96,8 @@ while True:
             newTask = values["New task"]
             if not newTask:
                 continue
-            print(newTask)
             newTask = newTask + "\n"
             tasksList.append(newTask)
-            print(tasksList)
             functions.get_todos("w", tasksList)
             window["New task"].update("")
             window["listOfTasks"].update(values=tasksList)
@@ -116,12 +118,12 @@ while True:
                 functions.get_todos("w", tasksList)
                 window["New task"].update("")
                 window["listOfTasks"].update(values=tasksList)
-                print("Print tasklist", tasksList)
             except IndexError:
                 fsg.popup("Please select a task first",
                           font=("Helvetica", 20))
         case "Delete":
-            print("TODO")
+            window["New task"].update("")
+            print(values)
         case "Complete":
             try:
                 tasksList = functions.get_todos("r")
