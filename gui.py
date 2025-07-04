@@ -1,5 +1,5 @@
 from modules import functions
-import FreeSimpleGUI as fsg
+import FreeSimpleGUI as sg
 import time
 import os
 
@@ -7,8 +7,8 @@ if not os.path.exists("todos.txt"):
     with open("todos.txt", "w") as file:
         pass
 
-fsg.theme("DarkGreen7")
-clock = fsg.Text("", key="clock")
+sg.theme("DarkGreen7")
+clock = sg.Text("", key="clock")
 
 # INPUT FIELDS AND LABELS
 # Input label followed by field which returns a dictionary with key
@@ -16,25 +16,25 @@ clock = fsg.Text("", key="clock")
 # as the value. It is the key that window uses to refer to that element and
 # get the value
 
-taskInputLabel = fsg.Text("New task")
-taskInputField = fsg.InputText(tooltip="Enter new task",
+taskInputLabel = sg.Text("New task")
+taskInputField = g.InputText(tooltip="Enter new task",
                                key="New task")
 
-displaySelectedTaskLabel = fsg.Text("Selected task")
-displaySelectedTaskField = fsg.InputText(tooltip="Display selected task",
+displaySelectedTaskLabel = sg.Text("Selected task")
+displaySelectedTaskField = sg.InputText(tooltip="Display selected task",
                                          key="Selected task")
 
 # CREATE BUTTONS - by default they return a click event. Events can be disabled
-editBtn = fsg.Button("Edit", key="Edit")
-deleteBtn = fsg.Button("Delete", key="Delete")
-addTaskBtn = fsg.Button("Add task", key="Add")
-exitBtn = fsg.Button("Exit", key="Exit")
-completeBtn = fsg.Button("Complete", key="Complete")
-cancelBtn = fsg.Button("Cancel", key="Cancel")
+editBtn = sg.Button("Edit", key="Edit")
+deleteBtn = sg.Button("Delete", key="Delete")
+addTaskBtn = sg.Button("Add task", key="Add")
+exitBtn = sg.Button("Exit", key="Exit")
+completeBtn = sg.Button("Complete", key="Complete")
+cancelBtn = sg.Button("Cancel", key="Cancel")
 
 
 # DISPLAY FIELDS
-displayedTasks = fsg.Listbox(values=functions.get_todos("r"),
+displayedTasks = sg.Listbox(values=functions.get_todos("r"),
                              key="listOfTasks",
                              enable_events=True,
                              size=(45, 12))
@@ -43,8 +43,7 @@ layout = [
     [clock],
     [taskInputLabel],
     [taskInputField, addTaskBtn],
-    [editBtn, completeBtn, deleteBtn],
-    [displaySelectedTaskLabel],
+    [displaySelectedTaskLabel, editBtn, completeBtn, deleteBtn],
     [displaySelectedTaskField],
     [displayedTasks],
     [exitBtn, cancelBtn]
@@ -52,7 +51,7 @@ layout = [
 
 # Create an instance of window class, with the title "Task Manager", and given
 # layout and font
-window = fsg.Window("Task Manager",
+window = sg.Window("Task Manager",
                     layout,
                     font=("Helvetica", 20))
 
@@ -98,6 +97,7 @@ while True:
                 continue
             newTask = newTask + "\n"
             tasksList.append(newTask)
+            print(tasksList)
             functions.get_todos("w", tasksList)
             window["New task"].update("")
             window["listOfTasks"].update(values=tasksList)
@@ -119,7 +119,7 @@ while True:
                 window["New task"].update("")
                 window["listOfTasks"].update(values=tasksList)
             except IndexError:
-                fsg.popup("Please select a task first",
+                sg.popup("Please select a task first",
                           font=("Helvetica", 20))
         case "Delete":
             window["New task"].update("")
@@ -133,7 +133,7 @@ while True:
                 window["listOfTasks"].update(values=tasksList)
                 window["New task"].update("")
             except IndexError:
-                fsg.popup("Please select a task first",
+                sg.popup("Please select a task first",
                           font=("Helvetica", 20))
         case "Cancel":
             window["New task"].update("")
@@ -141,7 +141,7 @@ while True:
         case "listOfTasks":
             window["New task"].update(value=values["listOfTasks"][0]
                                       .strip("\n"))
-        case fsg.WIN_CLOSED:
+        case sg.WIN_CLOSED:
             break
         case "Exit":
             break
