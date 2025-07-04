@@ -10,16 +10,15 @@ if not os.path.exists("todos.txt"):
 sg.theme("DarkGreen7")
 clock = sg.Text("", key="clock")
 
-# INPUT FIELDS AND LABELS
+# CREATE INPUT FIELDS AND LABELS
 taskInputLabel = sg.Text("New task")
-taskInputField = sg.InputText(tooltip="Enter new task",
-                               key="New task")
+taskInputField = sg.InputText(tooltip="Enter new task", key="New task")
 
 displaySelectedTaskLabel = sg.Text("Selected task")
 displaySelectedTaskField = sg.InputText(tooltip="Display selected task",
-                                         key="Selected task")
+                                        key="Selected task")
 
-# CREATE BUTTONS - by default they return a click event. Events can be disabled
+# CREATE BUTTONS
 editBtn = sg.Button("Edit", key="Edit")
 deleteBtn = sg.Button("Delete", key="Delete")
 addTaskBtn = sg.Button("Add task", key="Add")
@@ -28,7 +27,7 @@ completeBtn = sg.Button("Complete", key="Complete")
 cancelBtn = sg.Button("Cancel", key="Cancel")
 
 
-# DISPLAY FIELDS
+# DISPLAY TASKS
 displayedTasks = sg.Listbox(values=functions.get_todos("r"),
                             key="listOfTasks",
                             enable_events=True,
@@ -91,7 +90,7 @@ while True:
                 window["listOfTasks"].update(values=tasksList)
             except IndexError:
                 sg.popup("Please select a task first",
-                          font=("Helvetica", 20))
+                         font=("Helvetica", 20))
         case "Delete":
             window["New task"].update("")
             print(values)
@@ -105,7 +104,7 @@ while True:
                 window["New task"].update("")
             except IndexError:
                 sg.popup("Please select a task first",
-                          font=("Helvetica", 20))
+                         font=("Helvetica", 20))
         case "Cancel":
             window["New task"].update("")
             continue
