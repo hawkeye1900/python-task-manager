@@ -7,7 +7,7 @@ if not os.path.exists("todos.txt"):
     with open("todos.txt", "w") as file:
         pass
 
-sg.theme("DarkGreen7")
+sg.theme("DarkGrey15")
 clock = sg.Text("", key="clock")
 
 # CREATE INPUT FIELDS AND LABELS
@@ -17,6 +17,8 @@ taskInputField = sg.InputText(tooltip="Enter new task", key="New task")
 displaySelectedTaskLabel = sg.Text("Selected task")
 displaySelectedTaskField = sg.InputText(tooltip="Display selected task",
                                         key="Selected task")
+
+allTasksLabel = sg.Text("Tasks")
 
 # CREATE BUTTONS
 editBtn = sg.Button("Edit", key="Edit")
@@ -28,71 +30,55 @@ cancelBtn = sg.Button("Cancel", key="Cancel")
 
 
 # DISPLAY TASKS
-displayedTasks = sg.Listbox(values=functions.get_todos("r"),
+tasksList = functions.get_todos("r")
+displayedTasks = sg.Listbox(values=tasksList,
                             key="listOfTasks",
                             enable_events=True,
-                            size=(45, 12))
+                            size=(45, 8),
+                            text_color="white",
+                            tooltip="Select a task to edit, complete or "
+                                    "delete")
 
+# ADD ELEMENTS TO LAYOUT
 layout = [
     [clock],
     [taskInputLabel],
     [taskInputField, addTaskBtn],
     [displaySelectedTaskLabel, editBtn, completeBtn, deleteBtn],
     [displaySelectedTaskField],
+    [allTasksLabel, ],
     [displayedTasks],
     [exitBtn, cancelBtn]
 ]
 
-# Create an instance of window class, with the title "Task Manager", and given
-# layout and font
+# CREATE AN INSTANCE OF WINDOW CLASS AND ADD LAYOUT
 window = sg.Window("Task Manager", layout, font=("Helvetica", 20))
 
 
 while True:
     event, values = window.read(timeout=1000,
                                 close=False,
-                                # if close=True, window closes after
-                                # timeout
                                 timeout_key="No new event")
 
     # The clock is updated every 1 second, due to the timeout value in read()
-    # which is in ms
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
 
     match event:
         case "Add":
-            tasksList = functions.get_todos("r")
             newTask = values["New task"]
             if not newTask:
                 continue
             newTask = newTask + "\n"
             tasksList.append(newTask)
-            print(tasksList)
+
             functions.get_todos("w", tasksList)
             window["New task"].update("")
             window["listOfTasks"].update(values=tasksList)
         case "Edit":
-            try:
-                # Select the task to be edited
-                taskToEdit = values["listOfTasks"][0]
-
-                # Enter new task
-                newTask = values["New task"] + "\n"
-
-                # Get tasklist from .txt
-                tasksList = functions.get_todos("r")
-
-                # Update tasklist list
-                index = tasksList.index(taskToEdit)
-                tasksList[index] = newTask
-                functions.get_todos("w", tasksList)
-                window["New task"].update("")
-                window["listOfTasks"].update(values=tasksList)
-            except IndexError:
-                sg.popup("Please select a task first",
-                         font=("Helvetica", 20))
+            functions.edit_task()
         case "Delete":
             window["New task"].update("")
+            taskToDelete = values["listOfTasks"][0]
             print(values)
         case "Complete":
             try:
@@ -107,10 +93,8 @@ while True:
                          font=("Helvetica", 20))
         case "Cancel":
             window["New task"].update("")
+            window["Selected task"].update("")
             continue
-        case "listOfTasks":
-            window["New task"].update(value=values["listOfTasks"][0]
-                                      .strip("\n"))
         case sg.WIN_CLOSED:
             break
         case "Exit":
