@@ -1,4 +1,5 @@
-from modules import functions
+from modules import add_task
+from modules import get_todos, add_task, edit_task, delete_task, complete_task
 import FreeSimpleGUI as sg
 import time
 import os
@@ -14,7 +15,7 @@ clock = sg.Text("", key="clock")
 taskInputLabel = sg.Text("New task")
 taskInputField = sg.InputText(tooltip="Enter new task", key="New task")
 
-displaySelectedTaskLabel = sg.Text("Selected task")
+displaySelectedTaskLabel = sg.Text("Select action:")
 displaySelectedTaskField = sg.InputText(tooltip="Display selected task",
                                         key="Selected task")
 
@@ -30,7 +31,7 @@ cancelBtn = sg.Button("Cancel", key="Cancel")
 
 
 # DISPLAY TASKS
-tasksList = functions.get_todos("r")
+tasksList = get_todos("r")
 displayedTasks = sg.Listbox(values=tasksList,
                             key="listOfTasks",
                             enable_events=True,
@@ -65,27 +66,22 @@ while True:
 
     match event:
         case "Add":
-            newTask = values["New task"]
-            if not newTask:
-                continue
-            newTask = newTask + "\n"
-            tasksList.append(newTask)
-
-            functions.get_todos("w", tasksList)
-            window["New task"].update("")
+            tasksList = add_task(values, window)
             window["listOfTasks"].update(values=tasksList)
         case "Edit":
-            functions.edit_task()
+            edit_task()
+            tasksList = get_todos("r")
+            window["listOfTasks"].update(values=tasksList)
         case "Delete":
-            window["New task"].update("")
-            taskToDelete = values["listOfTasks"][0]
-            print(values)
+            delete_task()
+            tasksList = get_todos("r")
+            window["listOfTasks"].update(values=tasksList)
         case "Complete":
             try:
-                tasksList = functions.get_todos("r")
+                tasksList = get_todos("r")
                 completedTask = values["listOfTasks"][0]
                 tasksList.remove(completedTask)
-                functions.get_todos("w", tasksList)
+                get_todos("w", tasksList)
                 window["listOfTasks"].update(values=tasksList)
                 window["New task"].update("")
             except IndexError:
