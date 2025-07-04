@@ -11,13 +11,8 @@ sg.theme("DarkGreen7")
 clock = sg.Text("", key="clock")
 
 # INPUT FIELDS AND LABELS
-# Input label followed by field which returns a dictionary with key
-# (ie "New Task") as the dictionary key value, and the input is returned
-# as the value. It is the key that window uses to refer to that element and
-# get the value
-
 taskInputLabel = sg.Text("New task")
-taskInputField = g.InputText(tooltip="Enter new task",
+taskInputField = sg.InputText(tooltip="Enter new task",
                                key="New task")
 
 displaySelectedTaskLabel = sg.Text("Selected task")
@@ -35,9 +30,9 @@ cancelBtn = sg.Button("Cancel", key="Cancel")
 
 # DISPLAY FIELDS
 displayedTasks = sg.Listbox(values=functions.get_todos("r"),
-                             key="listOfTasks",
-                             enable_events=True,
-                             size=(45, 12))
+                            key="listOfTasks",
+                            enable_events=True,
+                            size=(45, 12))
 
 layout = [
     [clock],
@@ -51,25 +46,10 @@ layout = [
 
 # Create an instance of window class, with the title "Task Manager", and given
 # layout and font
-window = sg.Window("Task Manager",
-                    layout,
-                    font=("Helvetica", 20))
+window = sg.Window("Task Manager", layout, font=("Helvetica", 20))
 
 
 while True:
-    # window.read() reads data from window events.
-    # the timeout param causes read to wait for user interaction. If no
-    # interaction takes place, it returns a timeout_key
-    # the read() call returns 2 values, by convention known as event, values
-
-    # In all windows, events are triggered by:
-    #
-    # Button click
-    # Window closed using X
-
-    # Other events can be specifcally enabled using 'enable_events=True'
-    # when an element is created.
-
     event, values = window.read(timeout=1000,
                                 close=False,
                                 # if close=True, window closes after
@@ -79,15 +59,6 @@ while True:
     # The clock is updated every 1 second, due to the timeout value in read()
     # which is in ms
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
-
-    #   The event returns the key text from the button pressed or input
-    #   changed, ie if addTaskBtn is pressed, event = "Add"
-
-    #   values is a list or as in this case a dictionary of inputs,
-    #   where each input has a key and is given a value, which makes up the
-    #   dictionary key:value pairs. If the task input field receives a
-    #   value, then its key is "New task", which will be the key in the
-    #   dictionary key/value pair. Its value then is the value in the dict.
 
     match event:
         case "Add":
@@ -145,6 +116,5 @@ while True:
             break
         case "Exit":
             break
-
 
 window.close()
