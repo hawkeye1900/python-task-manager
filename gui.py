@@ -16,8 +16,6 @@ taskInputLabel = sg.Text("New task")
 taskInputField = sg.InputText(tooltip="Enter new task", key="New task")
 
 displaySelectedTaskLabel = sg.Text("Select action:")
-displaySelectedTaskField = sg.InputText(tooltip="Display selected task",
-                                        key="Selected task")
 
 allTasksLabel = sg.Text("Tasks")
 
@@ -46,7 +44,6 @@ layout = [
     [taskInputLabel],
     [taskInputField, addTaskBtn],
     [displaySelectedTaskLabel, editBtn, completeBtn, deleteBtn],
-    [displaySelectedTaskField],
     [allTasksLabel, ],
     [displayedTasks],
     [exitBtn, cancelBtn]
