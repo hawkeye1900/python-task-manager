@@ -49,6 +49,7 @@ def edit_task():
                     continue
                 case "Cancel":
                     edit_window["edit_task"].update("")
+                    continue
                 case sg.WIN_CLOSED:
                     break
                 case "Exit":

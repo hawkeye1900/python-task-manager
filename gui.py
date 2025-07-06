@@ -1,5 +1,5 @@
-from modules import add_task
-from modules import get_todos, add_task, edit_task, delete_task, complete_task
+from modules import (get_todos, add_task, detailed_add, edit_task,
+                     delete_task, complete_task)
 import FreeSimpleGUI as sg
 import time
 import os
@@ -14,15 +14,14 @@ clock = sg.Text("", key="clock")
 # CREATE INPUT FIELDS AND LABELS
 taskInputLabel = sg.Text("New task")
 taskInputField = sg.InputText(tooltip="Enter new task", key="New task")
-
 displaySelectedTaskLabel = sg.Text("Select action:")
-
 allTasksLabel = sg.Text("Tasks")
 
 # CREATE BUTTONS
 editBtn = sg.Button("Edit", key="Edit")
 deleteBtn = sg.Button("Delete", key="Delete")
-addTaskBtn = sg.Button("Add task", key="Add")
+addTaskBtn = sg.Button("Quick Add", key="Add", bind_return_key=True)
+addDetailedTaskBtn = sg.Button("Detailed Add", key="detailedAdd")
 exitBtn = sg.Button("Exit", key="Exit")
 completeBtn = sg.Button("Complete", key="Complete")
 cancelBtn = sg.Button("Cancel", key="Cancel")
@@ -43,8 +42,9 @@ layout = [
     [clock],
     [taskInputLabel],
     [taskInputField, addTaskBtn],
-    [displaySelectedTaskLabel, editBtn, completeBtn, deleteBtn],
-    [allTasksLabel, ],
+    [displaySelectedTaskLabel],
+    [addDetailedTaskBtn, editBtn, completeBtn, deleteBtn],
+    [allTasksLabel],
     [displayedTasks],
     [exitBtn, cancelBtn]
 ]
@@ -65,6 +65,8 @@ while True:
         case "Add":
             tasksList = add_task(values, window)
             window["listOfTasks"].update(values=tasksList)
+        case "detailedAdd":
+            detailed_add()
         case "Edit":
             edit_task()
             tasksList = get_todos("r")
@@ -86,7 +88,6 @@ while True:
                          font=("Helvetica", 20))
         case "Cancel":
             window["New task"].update("")
-            window["Selected task"].update("")
             continue
         case sg.WIN_CLOSED:
             break
