@@ -34,7 +34,7 @@ def reset_inputs(inputs):
     inputs["error"].update(visible=False)
 
 
-def detailed_add():
+def detailed_add(window):
     try:
         layout = [
             [sg.Text("Summary", size=(12, 1)), sg.InputText(
@@ -45,7 +45,7 @@ def detailed_add():
             [sg.Text("Priority", size=(12, 1)),
              sg.Combo(["Low", "Medium", "High"], key="priority")],
             [sg.Exit(),
-             sg.Save(),
+             sg.Save(bind_return_key=True),
              sg.Cancel(),
              sg.Text("Error: Semi-colon ; is an invalid character",
                      visible=False,
@@ -56,7 +56,6 @@ def detailed_add():
                                         layout,
                                         font=("Helvetica", 20),
                                         background_color="#800000")
-
         while True:
             event, values = detailed_add_window.read()
 
@@ -67,22 +66,28 @@ def detailed_add():
                     if any(";" in value for value in values.values()):
                         detailed_add_window["error"].update(visible=True)
                         continue
+
                     due_date = values["calendar"]
-                    parsed_date = datetime.strptime(due_date,
-                                                    "%Y-%m-%d %H:%M:%S")
-                    formatted_date = parsed_date.strftime("%A, %B %d, %Y")
+                    if not due_date:
+                        due_date = datetime.now()
+                        formatted_date = due_date.strftime("%A, %B %d, %Y")
+                    else:
+                        parsed_date = datetime.strptime(due_date,
+                                                        "%Y-%m-%d %H:%M:%S")
+                        formatted_date = parsed_date.strftime("%A, %B %d, %Y")
 
                     task = (f'{values["summary"]};'
                             f'{values["description"]};'
                             f'{values["priority"]};'
                             f'{formatted_date})')
-
+                    print(task)
                     all_tasks = get_todos("r")
                     task = task + "\n"
                     all_tasks.append(task)
                     get_todos("w", all_tasks)
-                    reset_inputs(detailed_add_window)
+                    window["listOfTasks"].update(values=all_tasks)
 
+                    reset_inputs(detailed_add_window)
                     continue
                 case "Cancel":
                     reset_inputs(detailed_add_window)

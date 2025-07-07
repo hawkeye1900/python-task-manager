@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/files/todos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/files/todos.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/add_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/add_task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/edit_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/edit_task.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

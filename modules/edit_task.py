@@ -30,7 +30,6 @@ def edit_task():
                          .update(value=values["listOfTasks"][0].strip("\n")))
 
                 case "Save":
-                    # Get tasks array index of task being edited
                     task_to_be_edited = values["listOfTasks"][0]
                     index_of_task = all_tasks.index(task_to_be_edited)
 

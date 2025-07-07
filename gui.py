@@ -50,48 +50,47 @@ layout = [
 ]
 
 # CREATE AN INSTANCE OF WINDOW CLASS AND ADD LAYOUT
-window = sg.Window("Task Manager", layout, font=("Helvetica", 20))
+main_window = sg.Window("Task Manager", layout, font=("Helvetica", 20))
 
 
 while True:
-    event, values = window.read(timeout=1000,
+    event, values = main_window.read(timeout=1000,
                                 close=False,
                                 timeout_key="No new event")
 
     # The clock is updated every 1 second, due to the timeout value in read()
-    window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
+    main_window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
 
     match event:
         case "Add":
-            tasksList = add_task(values, window)
-            window["listOfTasks"].update(values=tasksList)
+            add_task(values, main_window)
         case "detailedAdd":
-            detailed_add()
+            detailed_add(main_window)
         case "Edit":
             edit_task()
             tasksList = get_todos("r")
-            window["listOfTasks"].update(values=tasksList)
+            main_window["listOfTasks"].update(values=tasksList)
         case "Delete":
             delete_task()
             tasksList = get_todos("r")
-            window["listOfTasks"].update(values=tasksList)
+            main_window["listOfTasks"].update(values=tasksList)
         case "Complete":
             try:
                 tasksList = get_todos("r")
                 completedTask = values["listOfTasks"][0]
                 tasksList.remove(completedTask)
                 get_todos("w", tasksList)
-                window["listOfTasks"].update(values=tasksList)
-                window["New task"].update("")
+                main_window["listOfTasks"].update(values=tasksList)
+                main_window["New task"].update("")
             except IndexError:
                 sg.popup("Please select a task first",
                          font=("Helvetica", 20))
         case "Cancel":
-            window["New task"].update("")
+            main_window["New task"].update("")
             continue
         case sg.WIN_CLOSED:
             break
         case "Exit":
             break
 
-window.close()
+main_window.close()
