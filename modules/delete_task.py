@@ -2,7 +2,7 @@ from .get_todos import get_todos
 import FreeSimpleGUI as sg
 
 
-def delete_task():
+def delete_task(window):
     try:
         all_tasks = get_todos("r")
         layout = [
@@ -39,6 +39,7 @@ def delete_task():
                         get_todos("w", all_tasks)
                         delete_window["delete_task"].update("")
                         delete_window["listOfTasks"].update(values=all_tasks)
+                        window["listOfTasks"].update(values=all_tasks)
                     else:
                         continue
                 case "Cancel":

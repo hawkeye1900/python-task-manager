@@ -71,9 +71,7 @@ while True:
             tasksList = get_todos("r")
             main_window["listOfTasks"].update(values=tasksList)
         case "Delete":
-            delete_task()
-            tasksList = get_todos("r")
-            main_window["listOfTasks"].update(values=tasksList)
+            delete_task(main_window)
         case "Complete":
             try:
                 tasksList = get_todos("r")
