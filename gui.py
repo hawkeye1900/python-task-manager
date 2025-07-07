@@ -15,7 +15,7 @@ clock = sg.Text("", key="clock")
 taskInputLabel = sg.Text("New task")
 taskInputField = sg.InputText(tooltip="Enter new task", key="New task")
 displaySelectedTaskLabel = sg.Text("Select action:")
-allTasksLabel = sg.Text("Tasks")
+allTasksLabel = sg.Text("Tasks", pad=((0, 0), (10, 0)))
 
 # CREATE BUTTONS
 editBtn = sg.Button("Edit", key="Edit")
@@ -34,8 +34,8 @@ displayedTasks = sg.Listbox(values=tasksList,
                             enable_events=True,
                             size=(45, 8),
                             text_color="white",
-                            tooltip="Select a task to edit, complete or "
-                                    "delete")
+                            pad=((0, 0), (5, 20))
+                            )
 
 # ADD ELEMENTS TO LAYOUT
 layout = [

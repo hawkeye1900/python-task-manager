@@ -31,6 +31,8 @@ def reset_inputs(inputs):
     for key in defaults:
         inputs[key].update(defaults[key])
 
+    inputs["error"].update(visible=False)
+
 
 def detailed_add():
     try:
@@ -42,13 +44,18 @@ def detailed_add():
             [sg.CalendarButton("Due Date", key="calendar")],
             [sg.Text("Priority", size=(12, 1)),
              sg.Combo(["Low", "Medium", "High"], key="priority")],
-            [sg.Exit(), sg.Save(bind_return_key=True), sg.Cancel()]
+            [sg.Exit(),
+             sg.Save(),
+             sg.Cancel(),
+             sg.Text("Error: Semi-colon ; is an invalid character",
+                     visible=False,
+                     key="error")]
         ]
 
         detailed_add_window = sg.Window("Detailed Add Window",
                                         layout,
                                         font=("Helvetica", 20),
-                                        background_color="#800000" )
+                                        background_color="#800000")
 
         while True:
             event, values = detailed_add_window.read()
@@ -57,13 +64,18 @@ def detailed_add():
                 case "Exit":
                     break
                 case "Save":
+                    if any(";" in value for value in values.values()):
+                        detailed_add_window["error"].update(visible=True)
+                        continue
                     due_date = values["calendar"]
                     parsed_date = datetime.strptime(due_date,
                                                     "%Y-%m-%d %H:%M:%S")
                     formatted_date = parsed_date.strftime("%A, %B %d, %Y")
 
-                    task = (f'{values["summary"]}, {values["description"]}, '
-                            f'{values["priority"]}, {formatted_date})')
+                    task = (f'{values["summary"]};'
+                            f'{values["description"]};'
+                            f'{values["priority"]};'
+                            f'{formatted_date})')
 
                     all_tasks = get_todos("r")
                     task = task + "\n"
