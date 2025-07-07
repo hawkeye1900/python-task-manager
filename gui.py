@@ -1,5 +1,6 @@
-from modules import (get_todos, add_task, detailed_add, edit_task,
-                     delete_task, complete_task)
+from modules import (get_todos, add_task, edit_task,
+                     delete_task, detailed_add, get_task_summary,
+                     complete_task)
 import FreeSimpleGUI as sg
 import time
 import os
@@ -12,8 +13,9 @@ sg.theme("DarkGrey15")
 clock = sg.Text("", key="clock")
 
 # CREATE INPUT FIELDS AND LABELS
-taskInputLabel = sg.Text("New task")
-taskInputField = sg.InputText(tooltip="Enter new task", key="New task")
+taskInputLabel = sg.Text("Add new task")
+taskInputField = sg.InputText(tooltip="Add descriptive task title", key="New "
+                                                                     "task")
 displaySelectedTaskLabel = sg.Text("Select action:")
 allTasksLabel = sg.Text("Tasks", pad=((0, 0), (10, 0)))
 
@@ -67,9 +69,7 @@ while True:
         case "detailedAdd":
             detailed_add(main_window)
         case "Edit":
-            edit_task()
-            tasksList = get_todos("r")
-            main_window["listOfTasks"].update(values=tasksList)
+            edit_task(main_window)
         case "Delete":
             delete_task(main_window)
         case "Complete":

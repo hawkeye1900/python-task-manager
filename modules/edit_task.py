@@ -1,8 +1,9 @@
 import FreeSimpleGUI as sg
-from .get_todos import get_todos
+
+from modules import (get_todos, get_task_summary)
 
 
-def edit_task():
+def edit_task(window):
     try:
         all_tasks = get_todos("r")
         layout = [
@@ -44,7 +45,10 @@ def edit_task():
 
                     get_todos("w", all_tasks)
                     edit_window["edit_task"].update("")
-                    edit_window["listOfTasks"].update(values=all_tasks)
+                    edit_window["listOfTasks"].update(
+                        values=get_task_summary(all_tasks))
+                    window["listOfTasks"].update(
+                        values=get_task_summary(all_tasks))
                     continue
                 case "Cancel":
                     edit_window["edit_task"].update("")

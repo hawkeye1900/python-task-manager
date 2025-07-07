@@ -1,3 +1,4 @@
-finish this project
-Test task, Testing reset function, Medium, Thursday, July 31, 2025)
-Do kitchen worktop sealant
+task1
+task2
+task3
+task4
