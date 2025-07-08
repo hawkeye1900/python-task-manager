@@ -1,14 +1,14 @@
-from .get_todos import get_todos
+from .get_todos import complete_task
 import FreeSimpleGUI as sg
 
 
 def delete_task(window):
     try:
-        all_tasks = get_todos("r")
+        completed = complete_task("r")
         layout = [
             [sg.InputText(key="delete_task", font=14)],
             [sg.Button("Delete task?", key="Delete", font=12)],
-            [sg.Listbox(values=all_tasks,
+            [sg.Listbox(values=completed,
                         key="listOfTasks",
                         size=(45, 8),
                         text_color="white",
@@ -34,13 +34,13 @@ def delete_task(window):
                     choice = sg.popup_ok_cancel("Confirm OK? Cancel")
                     if choice == "OK":
                         task_to_be_deleted = values["listOfTasks"][0]
-                        index_of_task = all_tasks.index(task_to_be_deleted)
-                        all_tasks.remove(all_tasks[index_of_task])
+                        index_of_task = completed.index(task_to_be_deleted)
+                        completed.remove(completed[index_of_task])
 
-                        get_todos("w", all_tasks)
+                        complete_task("w", completed)
                         delete_window["delete_task"].update("")
-                        delete_window["listOfTasks"].update(values=all_tasks)
-                        window["listOfTasks"].update(values=all_tasks)
+                        delete_window["listOfTasks"].update(values=completed)
+                        window["listOfTasks"].update(values=completed)
                     else:
                         continue
                 case "Cancel":

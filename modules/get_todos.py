@@ -33,7 +33,6 @@ def get_all_tasks():
     outstanding = get_todos("r")
     completed = complete_task("r")
     all_tasks = outstanding + completed
-    print(all_tasks)
     return all_tasks
 
 

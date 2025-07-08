@@ -95,10 +95,9 @@ main_window = sg.Window("Task Manager",
 
 if not tasksList:
     tasksDisplayLabel.update("No Current Outstanding Tasks")
-    tasksDisplayLabel.update(text_color="red")
 else:
     tasksDisplayLabel.update("Current Outstanding Tasks")
-
+    displayedTasks.update(values=view_current_tasks(main_window))
 while True:
     event, values = main_window.read(timeout=1000,
                                      close=False,
@@ -138,7 +137,7 @@ while True:
                 continue
         case "viewAll":
             # get_all_tasks(displayedTasks)
-            displayedTasks.update(values=get_all_tasks())
+            displayedTasks.update(values=get_task_summary(get_all_tasks()))
             tasksDisplayLabel.update("All Tasks")
         case "viewCurrent":
             view_current_tasks(main_window)
