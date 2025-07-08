@@ -5,14 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6f3e121-20bd-430b-a9fa-644f5bd9776c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/modules/detailed_add.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/todos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/files/todos.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/files/todos.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/add_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/add_task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/delete_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/delete_task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/detailed_add.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/detailed_add.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/edit_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/edit_task.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/get_todos.py" beforeDir="false" afterPath="$PROJECT_DIR$/modules/get_todos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/modules/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

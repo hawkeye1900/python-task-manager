@@ -6,14 +6,15 @@ def delete_task(window):
     try:
         all_tasks = get_todos("r")
         layout = [
-            [sg.InputText(key="delete_task")],
-            [sg.Button("Delete task?", key="Delete")],
+            [sg.InputText(key="delete_task", font=14)],
+            [sg.Button("Delete task?", key="Delete", font=12)],
             [sg.Listbox(values=all_tasks,
                         key="listOfTasks",
                         size=(45, 8),
                         text_color="white",
-                        enable_events=True)],
-            [sg.Exit(), sg.Cancel()]
+                        enable_events=True,
+                        font=14)],
+            [sg.Exit(font=12), sg.Cancel(font=12)]
         ]
 
         delete_window = sg.Window("Delete Window",

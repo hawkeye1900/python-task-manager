@@ -20,28 +20,29 @@ def detailed_add(window):
     try:
         layout = [
             [sg.Text("Summary",
-                     size=(12, 1), pad=(0, 5)),
-             sg.InputText(key="summary", pad=(3, 5))],
+                     size=(12, 1), pad=(0, 5), font=14),
+             sg.InputText(key="summary", pad=(3, 5), font=14)],
             [sg.Text("Description",
-                     size=(12, 1), pad=(0, 5)),
-             sg.InputText(key="description", pad=(3, 5))],
+                     size=(12, 1), pad=(0, 5), font=14),
+             sg.InputText(key="description", pad=(3, 5), font=14)],
             [sg.CalendarButton("Due Date",
-                               key="calendar", pad=(0, 5))],
+                               key="calendar", pad=(0, 5), font=12)],
             [sg.Text("Priority",
                      size=(12, 1),
-                     pad=(0, 5)),
+                     pad=(0, 5), font=14),
              sg.Combo(["Low", "Medium", "High"],
                       pad=(3, 5),
-                      key="priority")],
-            [sg.Save(bind_return_key=True, pad=(0, 5)),
-             sg.Cancel(pad=(3, 5)),
-             sg.Exit(pad=(3, 5)),
+                      key="priority", font=14)],
+            [sg.Save(bind_return_key=True, pad=(0, 5), font=12),
+             sg.Cancel(pad=(3, 5), font=12),
+             sg.Exit(pad=(3, 5), font=12),
              sg.Text("Error: Semi-colon ; is an invalid character",
                      visible=False,
                      key="error",
                      background_color="red",
                      text_color="yellow",
-                     pad=(10, 0))
+                     pad=(10, 0),
+                     font=14)
              ]
         ]
 
@@ -53,6 +54,8 @@ def detailed_add(window):
             event, values = detailed_add_window.read()
 
             match event:
+                case sg.WIN_CLOSED:
+                    break
                 case "Exit":
                     break
                 case "Save":

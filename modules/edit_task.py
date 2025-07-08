@@ -7,14 +7,15 @@ def edit_task(window):
     try:
         all_tasks = get_todos("r")
         layout = [
-            [sg.Text("Task for editing", size=(12, 1)),
-             sg.InputText(key="edit_task")],
+            [sg.Text("Task for editing", size=(12, 1), font=14),
+             sg.InputText(key="edit_task", font=14)],
             [sg.Listbox(values=all_tasks,
                         key="listOfTasks",
                         size=(45, 8),
                         text_color="white",
-                        enable_events=True)],
-            [sg.Exit(), sg.Save(), sg.Cancel()]
+                        enable_events=True,
+                        font=14)],
+            [sg.Exit(font=12), sg.Save(font=12), sg.Cancel(font=12)]
         ]
 
         edit_window = sg.Window("Edit Window",
