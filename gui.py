@@ -1,4 +1,4 @@
-from modules import (get_todos, add_task, edit_task,
+from modules import (get_todos, add_task, edit_task, get_all_tasks,
                      delete_task, detailed_add, get_task_summary,
                      complete_task, view_current_tasks, view_completed_tasks)
 import FreeSimpleGUI as sg
@@ -46,8 +46,13 @@ editBtn = sg.Button("Edit", key="Edit", font=12)
 viewCompletedTasksBtn = sg.Button("Completed",
                                   key="viewCompleted",
                                   font=12)
-deleteBtn = sg.Button("Delete", key="Delete", font=12)
-viewOutstandingTasksBtn = sg.Button("Current",
+deleteBtn = sg.Button("Delete",
+                      key="Delete",
+                      font=12)
+viewAllTasksBtn = sg.Button("All Tasks",
+                            key="viewAll",
+                            font=12)
+viewOutstandingTasksBtn = sg.Button("Outstanding",
                                     key="viewCurrent",
                                     font=12)
 completeBtn = sg.Button("Complete", key="Complete", font=12)
@@ -76,7 +81,7 @@ layout = [
     [addDetailedTaskBtn, editBtn, completeBtn, deleteBtn],
     [displayTaskView],
     [errorText],
-    [viewOutstandingTasksBtn, viewCompletedTasksBtn],
+    [viewAllTasksBtn, viewOutstandingTasksBtn, viewCompletedTasksBtn],
     [tasksDisplayLabel],
     [displayedTasks],
     [exitBtn, cancelBtn]
@@ -131,6 +136,10 @@ while True:
                 sg.popup("Please select a task first",
                          font=("Helvetica", 20))
                 continue
+        case "viewAll":
+            # get_all_tasks(displayedTasks)
+            displayedTasks.update(values=get_all_tasks())
+            tasksDisplayLabel.update("All Tasks")
         case "viewCurrent":
             view_current_tasks(main_window)
         case "viewCompleted":

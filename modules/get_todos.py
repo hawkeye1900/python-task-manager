@@ -29,5 +29,13 @@ def complete_task(mode, data=None, file_arg=filepath_completed_tasks):
             return None
 
 
+def get_all_tasks():
+    outstanding = get_todos("r")
+    completed = complete_task("r")
+    all_tasks = outstanding + completed
+    print(all_tasks)
+    return all_tasks
+
+
 if __name__ == "__main__":
     print(f"__name__ = {__name__}: Directly running function")
