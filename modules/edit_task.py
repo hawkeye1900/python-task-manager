@@ -1,11 +1,11 @@
 import FreeSimpleGUI as sg
 
-from modules import (get_todos, get_task_summary)
+from modules import (get_outstanding_todos, get_task_summary)
 
 
 def edit_task(window):
     try:
-        all_tasks = get_todos("r")
+        all_tasks = get_outstanding_todos("r")
         layout = [
             [sg.Text("Task for editing", size=(12, 1), font=14),
              sg.InputText(key="edit_task", font=14)],
@@ -19,8 +19,8 @@ def edit_task(window):
         ]
 
         edit_window = sg.Window("Edit Window",
-                               layout,
-                               font=("Helvetica", 20))
+                                layout,
+                                font=("Helvetica", 20))
 
         while True:
             event, values = edit_window.read()
@@ -44,7 +44,7 @@ def edit_task(window):
                     else:
                         all_tasks.remove(all_tasks[index_of_task])
 
-                    get_todos("w", all_tasks)
+                    get_outstanding_todos("w", all_tasks)
                     edit_window["edit_task"].update("")
                     edit_window["listOfTasks"].update(
                         values=get_task_summary(all_tasks))

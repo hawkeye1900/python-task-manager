@@ -2,7 +2,7 @@ filepath = "files/todos.txt"
 filepath_completed_tasks = "files/completed.txt"
 
 
-def get_todos(mode, data=None, file_arg=filepath):
+def get_outstanding_todos(mode, data=None, file_arg=filepath):
     with open(file_arg, mode) as local_file:
         if mode == "r":
             tasks = local_file.readlines()
@@ -19,7 +19,7 @@ def get_task_summary(tasks):
     return task_summaries
 
 
-def complete_task(mode, data=None, file_arg=filepath_completed_tasks):
+def get_completed_tasks(mode, data=None, file_arg=filepath_completed_tasks):
     with open(file_arg, mode) as local_file:
         if mode == "r":
             tasks = local_file.readlines()
@@ -30,8 +30,8 @@ def complete_task(mode, data=None, file_arg=filepath_completed_tasks):
 
 
 def get_all_tasks():
-    outstanding = get_todos("r")
-    completed = complete_task("r")
+    outstanding = get_outstanding_todos("r")
+    completed = get_completed_tasks("r")
     all_tasks = outstanding + completed
     return all_tasks
 

@@ -1,10 +1,10 @@
-from .get_todos import complete_task
+from .get_todos import get_completed_tasks
 import FreeSimpleGUI as sg
 
 
 def delete_task(window):
     try:
-        completed = complete_task("r")
+        completed = get_completed_tasks("r")
         layout = [
             [sg.InputText(key="delete_task", font=14)],
             [sg.Button("Delete task?", key="Delete", font=12)],
@@ -37,7 +37,7 @@ def delete_task(window):
                         index_of_task = completed.index(task_to_be_deleted)
                         completed.remove(completed[index_of_task])
 
-                        complete_task("w", completed)
+                        get_completed_tasks("w", completed)
                         delete_window["delete_task"].update("")
                         delete_window["listOfTasks"].update(values=completed)
                         window["listOfTasks"].update(values=completed)

@@ -1,5 +1,5 @@
 import FreeSimpleGUI as sg
-from modules import (get_todos, get_task_summary)
+from modules import (get_outstanding_todos, get_task_summary)
 
 
 def add_task(values, window):
@@ -11,9 +11,9 @@ def add_task(values, window):
         values["New task"] = ""
 
     task = new_task + "\n"
-    tasks_list = get_todos("r")
+    tasks_list = get_outstanding_todos("r")
     tasks_list.append(task)
-    get_todos("w", tasks_list)
+    get_outstanding_todos("w", tasks_list)
     print(tasks_list)
 
     window["New task"].update("")

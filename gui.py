@@ -1,6 +1,7 @@
-from modules import (get_todos, add_task, edit_task, get_all_tasks,
+from modules import (get_outstanding_todos, add_task, edit_task,
+                     complete_task, get_all_tasks,
                      delete_task, detailed_add, get_task_summary,
-                     complete_task, view_current_tasks, view_completed_tasks)
+                     get_completed_tasks, view_current_tasks, view_completed_tasks)
 import FreeSimpleGUI as sg
 import time
 import os
@@ -53,7 +54,7 @@ viewAllTasksBtn = sg.Button("All Tasks",
                             key="viewAll",
                             font=12)
 viewOutstandingTasksBtn = sg.Button("Outstanding",
-                                    key="viewCurrent",
+                                    key="viewOutstanding",
                                     font=12)
 completeBtn = sg.Button("Complete", key="Complete", font=12)
 exitBtn = sg.Button("Exit", key="Exit", font=12)
@@ -61,7 +62,7 @@ cancelBtn = sg.Button("Cancel", key="Cancel", font=12)
 
 
 # DISPLAY TASKS
-tasksList = get_todos("r")
+tasksList = get_outstanding_todos("r")
 get_task_summary(tasksList)
 displayedTasks = sg.Listbox(values=[],
                             key="listOfTasks",
@@ -117,31 +118,20 @@ while True:
             delete_task(main_window)
         case "Complete":
             try:
-                all_completed_tasks = complete_task("r")
-                all_tasks = get_todos("r")
-                completedTask = values["listOfTasks"][0]
-                index_of_task = all_tasks.index(completedTask)
-
-                all_tasks.remove((all_tasks[index_of_task]))
-                all_completed_tasks.append(completedTask)
-
-                get_todos("w", all_tasks)
-                complete_task("w", all_completed_tasks)
-
-                main_window["listOfTasks"].update(values=get_task_summary(
-                    all_tasks))
-                main_window["New task"].update("")
+                complete_task(main_window, values)
             except IndexError:
                 sg.popup("Please select a task first",
                          font=("Helvetica", 20))
                 continue
         case "viewAll":
-            # get_all_tasks(displayedTasks)
+            completeBtn.update(disabled=True)
             displayedTasks.update(values=get_task_summary(get_all_tasks()))
             tasksDisplayLabel.update("All Tasks")
-        case "viewCurrent":
+        case "viewOutstanding":
+            completeBtn.update(disabled=False)
             view_current_tasks(main_window)
         case "viewCompleted":
+            completeBtn.update(disabled=True)
             view_completed_tasks(main_window)
         case "Cancel":
             main_window["New task"].update("")

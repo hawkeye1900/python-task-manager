@@ -1,6 +1,6 @@
 import FreeSimpleGUI as sg
 from datetime import datetime
-from modules import (get_todos, get_task_summary)
+from modules import (get_outstanding_todos, get_task_summary)
 
 
 def reset_inputs(inputs):
@@ -77,10 +77,10 @@ def detailed_add(window):
                             f'{values["priority"]};'
                             f'{formatted_date})')
                     print(task)
-                    all_tasks = get_todos("r")
+                    all_tasks = get_outstanding_todos("r")
                     task = task + "\n"
                     all_tasks.append(task)
-                    get_todos("w", all_tasks)
+                    get_outstanding_todos("w", all_tasks)
                     (window["listOfTasks"]
                     .update(values=get_task_summary(
                         all_tasks)))
