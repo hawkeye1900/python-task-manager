@@ -1,4 +1,5 @@
 import FreeSimpleGUI as sg
+from datetime import datetime, timedelta
 from modules import (get_outstanding_todos, get_task_summary)
 
 
@@ -10,11 +11,14 @@ def add_task(values, window):
         sg.popup("You entered an invalid character - \\n")
         values["New task"] = ""
 
-    task = new_task + "\n"
+    due_date = datetime.today()
+    due_date = due_date + timedelta(days=7)
+    formatted_date = due_date.strftime("%A, %B %d, %Y")
+
+    task = f"{new_task};{new_task};{formatted_date};Low\n"
     tasks_list = get_outstanding_todos("r")
     tasks_list.append(task)
     get_outstanding_todos("w", tasks_list)
-    print(tasks_list)
 
     window["New task"].update("")
     window["listOfTasks"].update(values=get_task_summary(tasks_list))
